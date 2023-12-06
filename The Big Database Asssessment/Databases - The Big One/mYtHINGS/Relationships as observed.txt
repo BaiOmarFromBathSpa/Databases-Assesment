@@ -1,0 +1,14 @@
+Each Person has one contituency
+Each person has one vote count
+Each Person has one party
+Each Party has 1 or more persons
+Each party has one or more constituencies
+Each Party can have multiple persons in one contituency
+
+Each Country has one or more regions
+Each region has one or more counties
+Each county has one or more constituencies
+Each constituencies has one type
+
+Each person is unique
+Each constituency is unique
