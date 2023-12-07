@@ -1,56 +1,71 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
+
+
 int main() {
-
-    //=SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(D3:D14,B3,A3),B4,A4),B5,A5),B6,A6)
-
     string SUB = "SUBSTITUTE(";
-    string output = "=";
-    int lines, replacements,cellStart, repStart;
-    string cellStartStr, repStartStr;
-
-    cout << "How many lines are you replacing?";
-    cin >> lines;
-    cout << "How many replacements are you there?";
-    cin >> replacements;
-    cout << "Which cell are you replacing?\n";
-    cout << "Cell Letter: ";
-    cin >> cellStartStr;
-    cout << "Cell Number: ";
-    cin >> cellStart;
-    cout << "Where is the topmost replacement example\n";
-    cout << "Replacement Cell Letter: ";
-    cin >> repStartStr;
-    cout << "Replacement Cell Number: ";
-    cin >> repStart;
-
-    for (int i = 0; i < replacements; i++)
-        output = output + SUB;
-    output = output + cellStartStr;
-    output = output + to_string(cellStart);
-    output = output + ":";
-    output = output + cellStartStr;
-    output = output + to_string(cellStart+lines-1);
-    output = output + ",";
-
-    for (int i = 0; i < replacements; i++){
-        string leftside = repStartStr;
-        leftside [leftside.length()-1] = leftside[leftside.length()-1] - 1;
-        output = output + repStartStr;
-        output = output + to_string(repStart);
-        output = output + ",";
-        output = output + leftside;
-        output = output + to_string(repStart);
-        output = output + ")";
-
-        if (replacements == i-1) {
-            output = output + ",";
-            repStart++;
+    string Output = "=";
+    string RangeCompare, RangeReplace, RangeTarget; // compare it what its being compared to, replace is what values to replace with, target is
+    // string UserInput = "D3:D14,B3:B6,A3:A6"
+    
+    getline(cin, RangeTarget, ',');
+    
+    if(RangeTarget[0] == '=')
+        RangeTarget.erase(0,1);
+    
+    //second bit
+    getline(cin, RangeCompare, ',');
+    
+    string CompStart = "", CompEnd = "", TempNum = ""; //Range Start to range end strings
+    bool usingCompStart = true; 
+    int iCompStart, iCompEnd; //Range Start to range end integers
+    
+    for (int i = 0; i < RangeCompare.length(); i++) {
+        if (RangeCompare[i] == ':') {
+            iCompStart = stoi(TempNum);
+            TempNum = "";
+            continue;
+        }
+        else if (RangeCompare[i] >= 'A' && RangeCompare[i] <= 'Z'){
+            (usingCompStart) ? CompStart += RangeCompare[i] : CompEnd += RangeCompare[i];
+        } else if (RangeCompare[i] >= '0' && RangeCompare[i] <= '9'){
+            TempNum += RangeCompare; 
+        }
+        if (RangeCompare.length() == i-1 && usingCompStart == false){
+            iCompEnd = stoi(TempNum);
         }
     }
-
-    cout << output << endl;;
-    return 0;
+    
+    //third bit
+    string RepStart = "", RepEnd = ""; //Range Start to range end strings
+    bool usingRepStart = true; 
+    int iRepStart, iRepEnd;
+    TempNum = "";
+    
+    getline(cin, RangeReplace);
+    
+    for (int i = 0; i < RangeReplace.length(); i++) {
+        if (RangeReplace[i] == ':') {
+            iRepStart = stoi(TempNum);
+            TempNum = "";
+            continue;
+        }
+        else if (RangeReplace[i] >= 'A' && RangeReplace[i] <= 'Z'){
+            (usingRepStart) ? RepStart += RangeCompare[i] : RepEnd += RangeCompare[i];
+        }
+        else if (RangeReplace[i] >= '0' && RangeReplace[i] <= '9'){
+            TempNum += RangeReplace; 
+        }
+        if (RangeReplace.length() == i-1 && usingRepStart == false){
+            iRepEnd = stoi(TempNum);
+        }
+    }
+    
+    // input format
+    //=D3:D14,B3:B6,A3:A6
+    // output format
+    //=SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(D3:D14,B3,A3),B4,A4),B5,A5),B6,A6)
 }
