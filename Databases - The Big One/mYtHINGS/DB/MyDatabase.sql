@@ -1,2 +1,4 @@
-drop database if exists ElectoralSystemsIG;
-create database ElectoralSystemsIG;
+drop database if exists HOC_GE2019_CandidateResults;
+create database HOC_GE2019_CandidateResults;
+
+use HOC_GE2019_CandidateResults;
